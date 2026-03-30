@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Climate AI Forecast</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Climate AI Forecast</h1>
+    <form action="/" method="post" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <button type="submit">Upload & Train</button>
+    </form>
+    <button onclick="fetchPredictions()">Get Predictions</button>
+    <div id="predictions"></div>
+
+    <script>
+        function fetchPredictions() {
+            fetch('/predict', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    let output = '<h2>Future Predictions</h2>';
+                    data.forEach((val, index) => {
+                        output += `<p>Month ${index + 1}: ${val}</p>`;
+                    });
+                    document.getElementById("predictions").innerHTML = output;
+                });
+        }
+    </script>
+</body>
+</html>
